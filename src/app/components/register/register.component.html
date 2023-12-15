@@ -1,0 +1,28 @@
+<div class="register">
+    <div class="header">
+        <h3>Varatharaj Token Integration</h3>
+    </div>
+
+    <div class="logincontainer">
+        <h1>Register</h1>
+        <div class="socialMediaLoginContainer">
+            <button style="background-color: #DB4437;"><i class="bi bi-google"></i></button>
+            <button style="background-color: #4267B2;"><i class="bi bi-facebook"></i></button>
+        </div>
+        <div class="linecontainer">
+            <hr> <span>or</span>
+            <hr>
+        </div>
+        <input type="text" placeholder="name" [(ngModel)]="userModel.name">
+        <input type="text" placeholder="email" [(ngModel)]="userModel.email">
+        <input placeholder="Password" [type]="isShowPassword ? 'text' : 'password'" [(ngModel)]="userModel.password">
+        <div class="paswordContainer">
+            <p *ngIf="!isShowPassword" (click)="togglePasswordMode()">Show Password</p>
+            <p *ngIf="isShowPassword" (click)="togglePasswordMode()">Hide Password</p>
+        </div>
+      
+        <button (click)="validation()">register</button>
+        <p>don't have an account?! <button style="color: #2980b9; background: none; border: none;" routerLink="/login">
+                login</button></p>
+    </div>
+</div>

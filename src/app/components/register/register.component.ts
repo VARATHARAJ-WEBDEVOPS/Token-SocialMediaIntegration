@@ -1,0 +1,166 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import Swal from 'sweetalert2';
+
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
+})
+export class RegisterComponent implements OnInit {
+  isShowPassword: boolean = false;
+
+  constructor(private authService: AuthService,
+    private router: Router) { }
+
+  alert(message: string, mood: String) {
+    Swal.fire({
+      title:  mood === "good" ? 'Yep!' :'Oops!',
+      text: `${message}`,
+      icon: mood === "good" ? 'success' : 'error',
+      confirmButtonText: 'Got it!'
+    });
+  }
+
+  togglePasswordMode() {
+    this.isShowPassword = !this.isShowPassword;
+  }
+
+  ngOnInit(): void {
+    console.log(this.authService.authChecking());
+    if (this.authService.authChecking()) {
+      this.router.navigateByUrl('dashboard');
+    }
+  }
+
+  userModel = {
+    name: '',
+    email: '',
+    password: ''
+  }
+
+  register() {
+    this.authService.register(this.userModel).subscribe(
+      (res: any) => {
+        this.alert(res.message, 'good');
+        return this.router.navigateByUrl('login');
+      }, (err) => {
+        this.alert(err.error.message, 'bad');
+      }
+    )
+  }
+
+  validation() {
+    if (this.validateName() && this.validateEmail() && this.validatePassword()) {
+      this.register();
+    }
+  }
+
+  validateName(): boolean {
+    if (!this.userModel.name) {
+      this.alert('Name is required.', 'bad');
+    } else if (this.userModel.name.length > 15) {
+      this.alert('Name should be at most 15 characters long.', 'bad');
+    } else {
+      return true
+    }
+    return false
+  }
+
+  validateEmail(): boolean {
+    const validation = this.validateEmailAddress(this.userModel.email);
+    switch (validation) {
+      case 'valid':
+        return true;
+      case 'missingAtSymbol':
+        this.alert('Email address should contain "@" symbol.', 'bad');
+        break;
+      case 'invalidDomain':
+        this.alert('Please enter a valid domain name.', 'bad');
+        break;
+      case 'uppercaseLetters':
+        this.alert('Email should not contain uppercase letters.', 'bad');
+        break;
+      case 'empty':
+        this.alert('Email is Required.', 'bad');
+        break;
+      default:
+        this.alert('Please enter a valid email address.', 'bad');
+        break;
+    }
+    return false;
+  }
+
+
+  validateEmailAddress(email: string): string {
+    if (!email) {
+      return 'empty';
+    }
+
+    const hasUppercase = /[A-Z]/.test(email);
+    if (hasUppercase) {
+      return 'uppercaseLetters';
+    }
+
+    const atIndex = email.indexOf('@');
+    if (atIndex === -1) {
+      return 'missingAtSymbol';
+    }
+
+    const domain = email.substring(atIndex + 1);
+    if (!/^[a-z0-9.-]+\.[a-z]{2,}$/.test(domain)) {
+      return 'invalidDomain';
+    }
+
+    return 'valid';
+  }
+
+  validatePassword(): boolean {
+    const validation = this.validatePasswordStrength(this.userModel.password);
+    switch (validation) {
+      case 'valid':
+        return true;
+      case 'length':
+        this.alert('Password should be at least 8 characters long.', 'bad');
+        break;
+      case 'uppercase':
+        this.alert('Password should contain at least one uppercase letter.', 'bad');
+        break;
+      case 'symbol':
+        this.alert('Password should contain at least one symbol.', 'bad');
+        break;
+      case 'number':
+        this.alert('Password should contain at least one number.', 'bad');
+        break;
+      default:
+        this.alert('Password is Required.', 'bad');
+        break;
+    }
+    return false; // Return false for any invalid password
+  }
+
+  validatePasswordStrength(password: string): string {
+    if (!password) {
+      return 'empty';
+    }
+
+    if (password.length < 8) {
+      return 'length';
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      return 'uppercase';
+    }
+
+    if (!/\d/.test(password)) {
+      return 'number';
+    }
+
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      return 'symbol';
+    }
+
+    return 'valid';
+  }
+}

@@ -1,0 +1,40 @@
+<div class="dashboard">
+    <div class="top">
+        <div class="profileRound">
+            <p>Profile Photo <br> not set</p>
+            <div class="editProfileRound">
+                <i class="bi bi-camera-fill"></i>
+            </div>
+        </div>
+        <p>{{user.name}}</p>
+        <p>{{user.email}}</p>
+        <p> ( Encrypted Password ): {{user.password}}</p>
+        <p 
+        style=
+        "padding: 0;
+        padding-top: 5px;
+        "
+        >( JWT Token )</p>
+        <div class="tokenContainer">
+            
+            <input type="text" [value]="userToken" readonly>
+            <div class="copyButton" (click)="copyToClipboard()">
+                <i class="bi bi-copy"></i>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="allUserContainer">
+            <div *ngFor="let data of datas">
+                <p>Id: {{data._id}} <br> 
+                    Name: {{data.name}} <br>
+                    Email: {{data.email}} <br> 
+                    Password: {{data.password}} </p>
+                    <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button (click)="logout()" class="logoutButton">Logout</button>
+<button (click)="shareContent()" class="shareButton">Share</button>
