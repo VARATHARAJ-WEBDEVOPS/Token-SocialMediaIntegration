@@ -1,7 +1,28 @@
 .dashboard {
-    background-color: #2980b9;
     width: 100%;
-    height: 100svh;
+    height: 90svh;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.header {
+    width: 100%;
+    height: 10svh;
+    background-color: #2980b9;
+    align-items: center;
+    display: flex;
+}
+
+h3 {
+    color: #fff;
+    padding: 15px;
 }
 
 .top {
@@ -9,7 +30,7 @@
     height: 60svh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     background-color: aliceblue;
     text-align: center;
@@ -35,6 +56,9 @@
     align-items: center;
     font-size: 15px;
     text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .editProfileRound {
@@ -53,7 +77,7 @@
 }
 
 p {
-    padding: 10px;
+    padding: 15px;
 }
 
 .tokenContainer {
@@ -95,13 +119,12 @@ p {
 }
 
 .logoutButton {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 95px;
     height: 45px;
     font-size: 15px;
-    margin-top: 30px;
     border-radius: 5px;
     background-color: #2980b9;
     border: none;
@@ -111,12 +134,11 @@ p {
 
 .shareButton {
     right: 0 ;
-    position: fixed;
+    position: absolute;
     top: 0;
     width: 95px;
     height: 45px;
     font-size: 15px;
-    margin-top: 30px;
     border-radius: 5px;
     background-color: #2980b9;
     border: none;

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { WebShareService } from 'src/app/services/web-share.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,8 +15,7 @@ export class DashboardComponent implements OnInit {
   userToken: any;
 
   constructor(private authService: AuthService,
-    private router: Router,
-    private webShareService: WebShareService) { }
+    private router: Router) { }
 
   alert(message: string, mood: String) {
     Swal.fire({
@@ -89,34 +87,25 @@ export class DashboardComponent implements OnInit {
     }
   }
   
-  // shareFiles() {
-  //   const filesArray: never[] = []; 
-  //   if (navigator['canShare'] && navigator['canShare']({ files: filesArray })) {
-  //     navigator['share']({
-  //       files: filesArray,
-  //       title: 'Vacation Pictures',
-  //       text: 'Photos from September 27 to October 14.'
-  //     })
-  //     .then(() => console.log('Share was successful.'))
-  //     .catch((error) => console.log('Sharing failed', error));
-  //   } else {
-  //     console.log(`Your system doesn't support sharing files.`);
-  //   }
-  // }
+  async shareFiles() {
+    const response = await fetch('/assets/images/ChainSys_Main_logo.png'); 
+    const blob = await response.blob();
   
-  shareContent() {
-    this.webShareService.shareContent(
-      'Shared from my Angular App!',
-      'Check out this awesome content!',
-      'https://your-website-url.com'
-    ).then(() => {
-      // Handle success if needed
-    }).catch((error) => {
-      console.log(error);
-      
-    });
+    const filesArray = [new File([blob], 'example.jpg', { type: 'image/jpeg' })];
+  
+    if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+      navigator.share({
+        files: filesArray,
+        title: 'Token & SocialMedia Integration Project by Varatharaj',
+        text: "This is Varatharaj's Social Media Integration Project",
+        url: 'https://master--varatharaj-token-and-social-media-int.netlify.app/'
+      })
+        .then(() => console.log('Share was successful.'))
+        .catch((error) => console.log('Sharing failed', error));
+    } else {
+      console.log(`Your system doesn't support sharing files.`);
+    }
   }
-  
 
 }
 
