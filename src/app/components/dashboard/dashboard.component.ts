@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit {
   }
   
   async shareFiles() {
-    const response = await fetch('/assets/images/ChainSys_Main_logo.png'); 
+    const response = await fetch('/assets/images/ChainSys_Main_logo.jpg'); 
     const blob = await response.blob();
   
     const filesArray = [new File([blob], 'example.jpg', { type: 'image/jpeg' })];
@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit {
     if (navigator.canShare && navigator.canShare({ files: filesArray })) {
       navigator.share({
         files: filesArray,
-        title: 'Token & SocialMedia Integration Project by Varatharaj',
+        // title: 'Token & SocialMedia Integration Project by Varatharaj',
         text: "This is Varatharaj's Social Media Integration Project",
         url: 'https://master--varatharaj-token-and-social-media-int.netlify.app/'
       })
